@@ -122,11 +122,16 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_VERBOSE; // | HTTP_LOG_FLAG_TRACE
             NSArray *files = [mgr contentsOfDirectoryAtPath:dirPath error:nil] ;
             for( NSString* filePath in files) {
                 //generate links
-                [mgr fileExistsAtPath:[dirPath stringByAppendingPathComponent:filePath] isDirectory:&isDir];
+                NSString *fullPath = [dirPath stringByAppendingPathComponent:filePath];
+                [mgr fileExistsAtPath:fullPath isDirectory:&isDir];
                 if (isDir) {
-                    [filesStr appendFormat:@"<a href=\"%@\"> &#x1F4C1 %@ </a><br/>",[path stringByAppendingPathComponent:filePath], filePath];
+                    [filesStr appendFormat:@"&#x1F4C1 <a href=\"%@\"> %@ </a><br/>",[path stringByAppendingPathComponent:filePath], filePath];
                 } else {
-                    [filesStr appendFormat:@"<a href=\"%@\"> %@ </a><br/>",[path stringByAppendingPathComponent:filePath], filePath];
+                    
+                    NSDictionary *fileAttributes = [[NSFileManager defaultManager] attributesOfItemAtPath:fullPath error:nil];
+                    UInt64 fileLength = (UInt64)[[fileAttributes objectForKey:NSFileSize] unsignedLongLongValue];
+                    
+                    [filesStr appendFormat:@"<a href=\"%@\"> %@ </a> %@ <br/>",[path stringByAppendingPathComponent:filePath], filePath, [self humanSize:fileLength]];
                 }
             }
             NSString* templatePath = [[NSBundle mainBundle] pathForResource:@"index" ofType:@"html"];
@@ -162,6 +167,18 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_VERBOSE; // | HTTP_LOG_FLAG_TRACE
     [parser appendData:postDataChunk];
 }
 
+- (NSString *)humanSize:(UInt64)size {
+    if (size >= 1024 * 1024 * 1024) {
+        return [NSString stringWithFormat:@"%.1f G", ((float)size) / 1024 / 1024 / 1024];
+    }
+    if (size >= 1024 * 1024) {
+        return [NSString stringWithFormat:@"%.1f M", ((float)size) / 1024 / 1024];
+    }
+    if (size >= 1024) {
+        return [NSString stringWithFormat:@"%d K", (int)size / 1024];
+    }
+    return [NSString stringWithFormat:@"%d B", (int)size];
+}
 
 //-----------------------------------------------------------------
 #pragma mark multipart form data parser delegate
