@@ -140,6 +140,7 @@
 		68FB5BD11CD456170072FA4B /* UIScrollView+MJRefresh.m in Sources */ = {isa = PBXBuildFile; fileRef = 68FB5BBD1CD456170072FA4B /* UIScrollView+MJRefresh.m */; };
 		68FB5BD21CD456170072FA4B /* UIView+MJExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 68FB5BBF1CD456170072FA4B /* UIView+MJExtension.m */; };
 		68FB5BD41CD45C940072FA4B /* SysInit.zip in Resources */ = {isa = PBXBuildFile; fileRef = 68FB5BD31CD45C940072FA4B /* SysInit.zip */; };
+		912973F8251DB320005B184D /* SGApplicationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 912973F7251DB320005B184D /* SGApplicationManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -414,6 +415,8 @@
 		68FB5BBE1CD456170072FA4B /* UIView+MJExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+MJExtension.h"; sourceTree = "<group>"; };
 		68FB5BBF1CD456170072FA4B /* UIView+MJExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+MJExtension.m"; sourceTree = "<group>"; };
 		68FB5BD31CD45C940072FA4B /* SysInit.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = SysInit.zip; sourceTree = "<group>"; };
+		912973F6251DB320005B184D /* SGApplicationManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SGApplicationManager.h; sourceTree = "<group>"; };
+		912973F7251DB320005B184D /* SGApplicationManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SGApplicationManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -650,6 +653,8 @@
 				683FC9B61CD2647300A37015 /* SGMethodIndex.m */,
 				68F2A1831CD3097300FF8689 /* SGIndexStorage.h */,
 				68F2A1841CD3097300FF8689 /* SGIndexStorage.m */,
+				912973F6251DB320005B184D /* SGApplicationManager.h */,
+				912973F7251DB320005B184D /* SGApplicationManager.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1322,7 +1327,8 @@
 				TargetAttributes = {
 					682A585B1C23EDFF00288515 = {
 						CreatedOnToolsVersion = 7.2;
-						DevelopmentTeam = 6CMYQQFFT8;
+						DevelopmentTeam = 8A6A5ZRM3A;
+						ProvisioningStyle = Manual;
 					};
 					682A58741C23EDFF00288515 = {
 						CreatedOnToolsVersion = 7.2;
@@ -1504,6 +1510,7 @@
 				68EA329B1C25675A00901A8C /* SGIndexManager.m in Sources */,
 				68EA32411C24F7A400901A8C /* PKSequentialAnimation.m in Sources */,
 				683583FE1CD0564900C40114 /* SGFileIndex.m in Sources */,
+				912973F8251DB320005B184D /* SGApplicationManager.m in Sources */,
 				68D777C81C2A510B00B5536C /* YALFoldingTabBarController.m in Sources */,
 				68D840771C269CC3008DDE9B /* SGFileUploadViewController.m in Sources */,
 				68FB5BCD1CD456170072FA4B /* MJRefreshStateHeader.m in Sources */,
@@ -1657,7 +1664,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 6CMYQQFFT8;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = 8A6A5ZRM3A;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/codeSprite/CommonFiles",
@@ -1668,6 +1676,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.soulghost.codeSprite;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = xueyu7_Wildcard_SEYJLZIGTF;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -1676,7 +1685,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 6CMYQQFFT8;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = 8A6A5ZRM3A;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/codeSprite/CommonFiles",
@@ -1687,6 +1697,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.soulghost.codeSprite;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = xueyu7_Wildcard_SEYJLZIGTF;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;

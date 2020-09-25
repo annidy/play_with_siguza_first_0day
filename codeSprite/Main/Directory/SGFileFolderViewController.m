@@ -14,10 +14,14 @@
 #import "SGIndexManager.h"
 #import "SGFileCell.h"
 #import <QuickLook/QuickLook.h>
+#import "SGApplicationManager.h"
 
 #define ActionSheetWifiTag 1
 #define ActionSheetJumpTag 2
 #define ActionSheetHeaderOrImplementTag 3
+
+#define ApplicationSandbox @"/private/var/mobile/Containers/Data/Application/"
+#define ApplicationBundle @"/private/var/containers/Bundle/Application/"
 
 @interface SGFileFolderViewController () <UIActionSheetDelegate,UIAlertViewDelegate,SSZipArchiveDelegate>
 
@@ -40,6 +44,7 @@
         NSArray<NSString*> *pathComps = [self.path componentsSeparatedByString:@"/"];
         self.title = pathComps[pathComps.count - 1];
         self.edgesForExtendedLayout = UIRectEdgeBottom;
+        [SGFileUtil setRootPath:path];
     }
     return self;
 }
@@ -57,13 +62,39 @@
     [mgr fileExistsAtPath:self.path isDirectory:&isDir];
     [self.files removeAllObjects];
     if (isDir) {
+        if ([self.path isEqual:@"/"]) {
+            {
+                SGFileComponent *comp = [[SGFileComponent alloc] init];
+                comp.name = @"应用程序";
+                comp.path = ApplicationBundle;
+                comp.isDir = YES;
+                [self.files addObject:comp];
+            }
+            {
+                SGFileComponent *comp = [[SGFileComponent alloc] init];
+                comp.name = @"应用沙盒";
+                comp.path = ApplicationSandbox;
+                comp.isDir = YES;
+                [self.files addObject:comp];
+            }
+        }
+        
         NSArray *pathes = [mgr contentsOfDirectoryAtPath:self.path error:nil];
         for(NSString *ph in pathes){
             if ([ph isEqualToString:@"__MACOSX"] || [ph hasPrefix:@"."]) {
                 continue;
             }
             SGFileComponent *comp = [[SGFileComponent alloc] init];
-            comp.name = ph;
+            if ([self.path isEqual:ApplicationBundle]) {
+                comp.name = [[SGApplicationManager shared] nameForBundle:[NSURL fileURLWithPath:[ApplicationBundle stringByAppendingPathComponent:ph] isDirectory:NO]];
+            } else if ([self.path isEqual:ApplicationSandbox]) {
+                comp.name = [[SGApplicationManager shared] nameForData:[NSURL fileURLWithPath:[ApplicationSandbox stringByAppendingPathComponent:ph] isDirectory:NO]];
+            } else {
+                comp.name = ph;
+            }
+            if (comp.name == nil) {
+                continue;
+            }
             isDir = YES;
             comp.path = [self.path stringByAppendingPathComponent:ph];
             [mgr fileExistsAtPath:comp.path isDirectory:&isDir];
@@ -78,6 +109,8 @@
         comp.name = pathComps[pathComps.count - 1];
         [self.files addObject:comp];
     }
+    NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES selector:@selector(localizedCompare:)];
+    [self.files sortUsingDescriptors:@[sort]];
     [self.tableView reloadData];
 }
 
@@ -103,16 +136,6 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)viewDidAppear:(BOOL)animated{
-    [super viewDidAppear:animated];
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        SGIndexManager *mgr = [SGIndexManager sharedManager];
-        [mgr loadSystemIndexWithCallback:^{
-            [self loadFiles];
-        }];
-    });
-}
 
 #pragma mark - UITableView DataSource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
