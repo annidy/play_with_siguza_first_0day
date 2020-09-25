@@ -46,8 +46,7 @@
     httpServer.port = 52013;
     self.httpServer = httpServer;
     [httpServer setType:@"_http._tcp."];
-    NSString *webPath = [[NSBundle mainBundle] resourcePath];
-    [httpServer setDocumentRoot:webPath];
+    [httpServer setDocumentRoot:[SGFileUtil rootPath]];
     [httpServer setConnectionClass:[MyHTTPConnection class]];
     NSError *err;
     if ([httpServer start:&err]) {

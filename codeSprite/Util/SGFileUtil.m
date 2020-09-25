@@ -51,15 +51,25 @@
     }
 }
 
+static NSString *gRootPath;
+
++ (void)setRootPath:(NSString *)rootPath {
+    gRootPath = rootPath;
+}
+
 + (NSString *)rootPath {
-    NSString *path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];
-    path = [path stringByAppendingPathComponent:@"codeSprite"];
-    NSFileManager *mgr = [NSFileManager defaultManager];
-    if(![mgr fileExistsAtPath:path]){
-        NSError *err;
-        [mgr createDirectoryAtPath:path withIntermediateDirectories:NO attributes:nil error:&err];
+    if (gRootPath == nil || gRootPath.length == 0) {
+        NSString *path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];
+        path = [path stringByAppendingPathComponent:@"codeSprite"];
+        NSFileManager *mgr = [NSFileManager defaultManager];
+        if(![mgr fileExistsAtPath:path]){
+            NSError *err;
+            [mgr createDirectoryAtPath:path withIntermediateDirectories:NO attributes:nil error:&err];
+        }
+        gRootPath = path;
     }
-    return path;
+
+    return gRootPath;
 }
 
 + (NSString *)sysLibPath {

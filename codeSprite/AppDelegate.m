@@ -68,9 +68,7 @@
 }
 
 - (void)setupIndex {
-    [[SGIndexManager sharedManager] loadUserIndexWithCallback:^{
-        
-    }];
+
 }
 
 @end

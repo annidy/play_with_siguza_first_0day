@@ -39,15 +39,10 @@
 
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated {
     [super pushViewController:viewController animated:animated];
-    if (self.viewControllers.count > 2) {
-        if ([viewController respondsToSelector:@selector(popToRoot)]) {
-            viewController.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"•••" style:UIBarButtonItemStylePlain target:viewController action:@selector(popToRoot)];
-        }
-    } else {
-        UIBarButtonItem *wifiBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(wifiClick)];
-        wifiBtn.tintColor = [UIColor brownColor];
-        viewController.navigationItem.rightBarButtonItem = wifiBtn;
-    }
+
+    UIBarButtonItem *wifiBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(wifiClick)];
+    wifiBtn.tintColor = [UIColor brownColor];
+    viewController.navigationItem.rightBarButtonItem = wifiBtn;
 }
 
 - (void)popToRoot {}

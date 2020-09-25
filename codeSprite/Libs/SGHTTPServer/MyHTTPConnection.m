@@ -111,9 +111,31 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_VERBOSE; // | HTTP_LOG_FLAG_TRACE
 		// use dynamic file response to apply our links to response template
 		return [[HTTPDynamicFileResponse alloc] initWithFilePath:templatePath forConnection:self separator:@"%" replacementDictionary:replacementDict];
 	}
-	if( [method isEqualToString:@"GET"] && [path hasPrefix:@"/upload/"] ) {
+	if( [method isEqualToString:@"GET"] ) {
+        NSFileManager *mgr = [NSFileManager defaultManager];
+        NSString *dirPath = [[config documentRoot] stringByAppendingPathComponent:path];
+        BOOL isDir = NO;
+        if ([mgr fileExistsAtPath:dirPath isDirectory:&isDir] && isDir) {
+            
+            // this method will generate response with links to uploaded file
+            NSMutableString* filesStr = [[NSMutableString alloc] init];
+            NSArray *files = [mgr contentsOfDirectoryAtPath:dirPath error:nil] ;
+            for( NSString* filePath in files) {
+                //generate links
+                [mgr fileExistsAtPath:[dirPath stringByAppendingPathComponent:filePath] isDirectory:&isDir];
+                if (isDir) {
+                    [filesStr appendFormat:@"<a href=\"%@\"> &#x1F4C1 %@ </a><br/>",[path stringByAppendingPathComponent:filePath], filePath];
+                } else {
+                    [filesStr appendFormat:@"<a href=\"%@\"> %@ </a><br/>",[path stringByAppendingPathComponent:filePath], filePath];
+                }
+            }
+            NSString* templatePath = [[NSBundle mainBundle] pathForResource:@"index" ofType:@"html"];
+            NSDictionary* replacementDict = [NSDictionary dictionaryWithObject:filesStr forKey:@"MyFiles"];
+            // use dynamic file response to apply our links to response template
+            return [[HTTPDynamicFileResponse alloc] initWithFilePath:templatePath forConnection:self separator:@"%" replacementDictionary:replacementDict];
+        }
 		// let download the uploaded files
-		return [[HTTPFileResponse alloc] initWithFilePath: [[config documentRoot] stringByAppendingString:path] forConnection:self];
+		return [[HTTPFileResponse alloc] initWithFilePath:dirPath forConnection:self];
 	}
 	
 	return [super httpResponseForMethod:method URI:path];

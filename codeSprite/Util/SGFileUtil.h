@@ -13,7 +13,7 @@
 + (instancetype)sharedUtil;
 + (NSString *)commonNameForFileNamed:(NSString *)fileName;
 + (NSString *)extensionNameForFileNamed:(NSString *)fileName;
-+ (NSString *)rootPath;
+@property (class) NSString *rootPath;
 + (NSString *)sysLibPath;
 + (NSString *)indexPath;
 + (NSString *)relativePathFromPath:(NSString *)path;
