@@ -59,6 +59,8 @@
     }else{
         [self.uploadView setAddress:@"HttpServer cannot start"];
     }
+    
+    [UIApplication sharedApplication].idleTimerDisabled = YES;
 }
 
 #pragma mark Notification Callback
@@ -97,6 +99,8 @@
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    [UIApplication sharedApplication].idleTimerDisabled = NO;
 }
 
 @end

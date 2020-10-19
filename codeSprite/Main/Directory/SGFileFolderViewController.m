@@ -44,7 +44,6 @@
         NSArray<NSString*> *pathComps = [self.path componentsSeparatedByString:@"/"];
         self.title = pathComps[pathComps.count - 1];
         self.edgesForExtendedLayout = UIRectEdgeBottom;
-        [SGFileUtil setRootPath:path];
     }
     return self;
 }
@@ -133,6 +132,7 @@
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     [self loadFiles];
+    [SGFileUtil setRootPath:self.path];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 

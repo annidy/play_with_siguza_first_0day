@@ -113,7 +113,7 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_VERBOSE; // | HTTP_LOG_FLAG_TRACE
 	}
 	if( [method isEqualToString:@"GET"] ) {
         NSFileManager *mgr = [NSFileManager defaultManager];
-        NSString *dirPath = [[config documentRoot] stringByAppendingPathComponent:path];
+        NSString *dirPath = [[config documentRoot] stringByAppendingPathComponent:[path stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
         BOOL isDir = NO;
         if ([mgr fileExistsAtPath:dirPath isDirectory:&isDir] && isDir) {
             
